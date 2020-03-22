@@ -1,17 +1,7 @@
-# Vue Boilerplate
-> Simple Vue.js boilerplate.
+# MarkerPin
+> Create map marker pins.
 
-This is a very simple boilerplate repository for a Vue.js app.
-It provides a basic Vuex store as well. As bundling tool I
-prefer rollup.js.
-
-## Installation
-
-Clone this repo and link it with npm to your development environment.
-
-## Dependencies
-
-See `package.json`.
+Simple app to create pin shaped icons to use as map markers.
 
 ## License
 MIT
