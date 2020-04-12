@@ -1,12 +1,14 @@
 <template>
-  <div>
-    <label>
-      <slot></slot>
-    </label>
-    <input type="range" :value="value" :min="min" :max="max" :step="step"
-      @input="onInput"
-      @change="onChange"
-    />
+  <div class="flex three">
+    <span>
+      <label>
+        <slot></slot>
+      </label>
+    </span>
+    <span class="">
+      <input type="range" :value="value" :min="min" :max="max" :step="step"
+        @input="onInput" @change="onChange" />
+    </span>
     <span>{{value}}</span>
   </div>
 </template>
@@ -21,11 +23,9 @@ export default {
   ],
   methods: {
     onChange (event) {
-      // console.log('change', event, event.target.value);
       this.$emit('change', Number(event.target.value));
     },
     onInput (event) {
-      // console.log('input', event, event.target.value);
       this.$emit('input', Number(event.target.value));
     },
   },

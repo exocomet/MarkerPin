@@ -42,6 +42,8 @@
   //
   //
   //
+  //
+  //
 
   var script = {
     name: 'Range',
@@ -53,11 +55,9 @@
     ],
     methods: {
       onChange (event) {
-        // console.log('change', event, event.target.value);
         this.$emit('change', Number(event.target.value));
       },
       onInput (event) {
-        // console.log('input', event, event.target.value);
         this.$emit('input', Number(event.target.value));
       },
     },
@@ -199,14 +199,16 @@
     var _vm = this;
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
-    return _c("div", [
-      _c("label", [_vm._t("default")], 2),
+    return _c("div", { staticClass: "flex three" }, [
+      _c("span", [_c("label", [_vm._t("default")], 2)]),
       _vm._v(" "),
-      _c("input", {
-        attrs: { type: "range", min: _vm.min, max: _vm.max, step: _vm.step },
-        domProps: { value: _vm.value },
-        on: { input: _vm.onInput, change: _vm.onChange }
-      }),
+      _c("span", {}, [
+        _c("input", {
+          attrs: { type: "range", min: _vm.min, max: _vm.max, step: _vm.step },
+          domProps: { value: _vm.value },
+          on: { input: _vm.onInput, change: _vm.onChange }
+        })
+      ]),
       _vm._v(" "),
       _c("span", [_vm._v(_vm._s(_vm.value))])
     ])
@@ -217,11 +219,11 @@
     /* style */
     const __vue_inject_styles__ = function (inject) {
       if (!inject) return
-      inject("data-v-3d45135e_0", { source: "\nlabel[data-v-3d45135e] {\r\n  display: inline-block;\n}\r\n", map: {"version":3,"sources":["C:\\code\\MarkerPin\\src\\components\\Range.vue"],"names":[],"mappings":";AAkCA;EACA,qBAAA;AACA","file":"Range.vue","sourcesContent":["<template>\r\n  <div>\r\n    <label>\r\n      <slot></slot>\r\n    </label>\r\n    <input type=\"range\" :value=\"value\" :min=\"min\" :max=\"max\" :step=\"step\"\r\n      @input=\"onInput\"\r\n      @change=\"onChange\"\r\n    />\r\n    <span>{{value}}</span>\r\n  </div>\r\n</template>\r\n<script>\r\nexport default {\r\n  name: 'Range',\r\n  props: [\r\n    'value',\r\n    'min',\r\n    'max',\r\n    'step'\r\n  ],\r\n  methods: {\r\n    onChange (event) {\r\n      // console.log('change', event, event.target.value);\r\n      this.$emit('change', Number(event.target.value));\r\n    },\r\n    onInput (event) {\r\n      // console.log('input', event, event.target.value);\r\n      this.$emit('input', Number(event.target.value));\r\n    },\r\n  },\r\n}\r\n</script>\r\n<style scoped>\r\nlabel {\r\n  display: inline-block;\r\n}\r\n</style>"]}, media: undefined });
+      inject("data-v-0d8ece85_0", { source: "\nlabel[data-v-0d8ece85] {\r\n  display: inline-block;\n}\r\n", map: {"version":3,"sources":["C:\\code\\MarkerPin\\src\\components\\Range.vue"],"names":[],"mappings":";AAkCA;EACA,qBAAA;AACA","file":"Range.vue","sourcesContent":["<template>\r\n  <div class=\"flex three\">\r\n    <span>\r\n      <label>\r\n        <slot></slot>\r\n      </label>\r\n    </span>\r\n    <span class=\"\">\r\n      <input type=\"range\" :value=\"value\" :min=\"min\" :max=\"max\" :step=\"step\"\r\n        @input=\"onInput\" @change=\"onChange\" />\r\n    </span>\r\n    <span>{{value}}</span>\r\n  </div>\r\n</template>\r\n<script>\r\nexport default {\r\n  name: 'Range',\r\n  props: [\r\n    'value',\r\n    'min',\r\n    'max',\r\n    'step'\r\n  ],\r\n  methods: {\r\n    onChange (event) {\r\n      this.$emit('change', Number(event.target.value));\r\n    },\r\n    onInput (event) {\r\n      this.$emit('input', Number(event.target.value));\r\n    },\r\n  },\r\n}\r\n</script>\r\n<style scoped>\r\nlabel {\r\n  display: inline-block;\r\n}\r\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__ = "data-v-3d45135e";
+    const __vue_scope_id__ = "data-v-0d8ece85";
     /* module identifier */
     const __vue_module_identifier__ = undefined;
     /* functional template */
@@ -260,7 +262,18 @@
   //
   //
   //
-
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   const pin = function(ctx, p, r, options = {}) {
     let h = options.h * r || 2.0 * r;
@@ -268,8 +281,15 @@
     let angle = Math.asin(r / h);
     let rs = options.ri * r || 0.4 * r;
 
+    let fillOpacity = options.fillOpacity !== undefined ? options.fillOpacity : '0.8';
+
     ctx.save();
-    ctx.fillStyle = options.fill || 'rgba(75,185,155,.5)';
+
+    ctx.translate(0.5, 0.5);
+
+
+
+    ctx.fillStyle = options.fill || `rgba(75,185,155,${fillOpacity})`;
     ctx.strokeStyle = options.stroke || "black";
 
     ctx.lineWidth = options.weight;
@@ -298,14 +318,21 @@
   };
 
   var script$1 = {
-    components: {range: __vue_component__},
+    components: {
+      range: __vue_component__,
+    },
     data() {
       return {
         canvas: undefined,
         context: undefined,
         radius: 50,
-        innerRadius: 0.3,
-        perimeter: 2,
+        options: {
+          h: 2, // height factor of radius
+          ri: 0.3, // inner radius factor of radius
+          weight: 2,
+          fill: undefined,
+          stroke: undefined,
+        },
         p: {x: 200, y: 200},
       };
     },
@@ -338,18 +365,18 @@
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         let p = this.p;
         let r = this.radius;
-        let options = {
-          ri: this.innerRadius,
-          h: this.perimeter,
-        };
-        console.log(p, r, options);
-        pin(this.context, this.p, this.radius, options);
+        pin(this.context, this.p, this.radius, this.options);
       }
     },
     watch: {
       radius(newVal, oldVal) {this.drawPin();},
-      innerRadius(newVal, oldVal) {this.drawPin();},
-      perimeter(newVal, oldVal) {this.drawPin();},
+      height(newVal, oldVal) {this.drawPin();},
+      options: {
+        handler(newVal, oldVal) {
+          this.drawPin();
+        },
+        deep: true,
+      }
     }
   };
 
@@ -362,11 +389,12 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("div", { staticClass: "main" }, [
-      _c("h1", [_vm._v("Marker pin")]),
+      _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "flex two" }, [
+      _c("div", { staticClass: "main flex two" }, [
         _c(
           "div",
+          { staticClass: "controls" },
           [
             _c(
               "range",
@@ -386,13 +414,28 @@
             _c(
               "range",
               {
-                attrs: { min: 0.0, max: 1, step: 0.1 },
+                attrs: { min: 0.0, max: 4, step: 0.1 },
                 model: {
-                  value: _vm.innerRadius,
+                  value: _vm.options.h,
                   callback: function($$v) {
-                    _vm.innerRadius = $$v;
+                    _vm.$set(_vm.options, "h", $$v);
                   },
-                  expression: "innerRadius"
+                  expression: "options.h"
+                }
+              },
+              [_vm._v("height")]
+            ),
+            _vm._v(" "),
+            _c(
+              "range",
+              {
+                attrs: { min: 0.0, max: 1, step: 0.01 },
+                model: {
+                  value: _vm.options.ri,
+                  callback: function($$v) {
+                    _vm.$set(_vm.options, "ri", $$v);
+                  },
+                  expression: "options.ri"
                 }
               },
               [_vm._v("Inner radius")]
@@ -401,26 +444,68 @@
             _c(
               "range",
               {
-                attrs: { min: 0.0, max: 3, step: 0.1 },
+                attrs: { min: 0.0, max: 20, step: 0.1 },
                 model: {
-                  value: _vm.perimeter,
+                  value: _vm.options.weight,
                   callback: function($$v) {
-                    _vm.perimeter = $$v;
+                    _vm.$set(_vm.options, "weight", $$v);
                   },
-                  expression: "perimeter"
+                  expression: "options.weight"
                 }
               },
-              [_vm._v("Perimeter")]
+              [_vm._v("Line weight")]
+            ),
+            _vm._v(" "),
+            _c(
+              "range",
+              {
+                attrs: { min: 0.0, max: 1, step: 0.05 },
+                model: {
+                  value: _vm.options.fillOpacity,
+                  callback: function($$v) {
+                    _vm.$set(_vm.options, "fillOpacity", $$v);
+                  },
+                  expression: "options.fillOpacity"
+                }
+              },
+              [_vm._v("Fill opacity")]
             )
           ],
           1
         ),
         _vm._v(" "),
-        _vm._m(0)
+        _vm._m(1)
       ])
     ])
   };
   var __vue_staticRenderFns__$1 = [
+    function() {
+      var _vm = this;
+      var _h = _vm.$createElement;
+      var _c = _vm._self._c || _h;
+      return _c("header", [
+        _c("img", {
+          staticStyle: { position: "relative" },
+          attrs: {
+            src:
+              "https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA02744-1024x768.jpg"
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticStyle: {
+              position: "absolute",
+              top: "20px",
+              left: "30px",
+              width: "100%"
+            }
+          },
+          [_c("h1", { staticClass: "anaglyph" }, [_vm._v("Marker pin")])]
+        )
+      ])
+    },
     function() {
       var _vm = this;
       var _h = _vm.$createElement;
@@ -435,11 +520,11 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-775d2ca2_0", { source: "\n.main[data-v-775d2ca2] {\r\n  margin: 0 auto;\n}\nlabel[data-v-775d2ca2] {\r\n  display: inline-block;\n}\ncanvas[data-v-775d2ca2] {\r\n  border: 1px dotted black;\n}\r\n", map: {"version":3,"sources":["C:\\code\\MarkerPin\\src\\App.vue"],"names":[],"mappings":";AAgHA;EACA,cAAA;AACA;AACA;EACA,qBAAA;AACA;AACA;EACA,wBAAA;AACA","file":"App.vue","sourcesContent":["<template>\r\n  <div class=\"main\">\r\n    <h1>Marker pin</h1>\r\n    <div class=\"flex two\">\r\n      <div>\r\n        <range v-model=\"radius\" :min=\"4\" :max=\"50\" :step=\"1\">Radius</range>\r\n        <range v-model=\"innerRadius\" :min=\"0.0\" :max=\"1\" :step=\"0.1\">Inner radius</range>\r\n        <range v-model=\"perimeter\" :min=\"0.0\" :max=\"3\" :step=\"0.1\">Perimeter</range>\r\n      </div>\r\n      <div>\r\n        <canvas id=\"canvas\" width=\"400\" height=\"400\"></canvas>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n<script>\r\n\r\nconst pin = function(ctx, p, r, options = {}) {\r\n  let h = options.h * r || 2.0 * r;\r\n  let ccw = true;\r\n  let angle = Math.asin(r / h);\r\n  let angle2 = 0.5 * Math.PI - angle;\r\n  let rs = options.ri * r || 0.4 * r;\r\n\r\n  ctx.save();\r\n  ctx.fillStyle = options.fill || 'rgba(75,185,155,.5)'\r\n  ctx.strokeStyle = options.stroke || \"black\";\r\n\r\n  ctx.lineWidth = options.weight;\r\n\r\n  ctx.translate(p.x, p.y);\r\n  ctx.moveTo(0, -h);\r\n  ctx.beginPath();\r\n  ctx.arc(0, -h, r, -Math.PI - angle, angle);\r\n  ctx.lineTo(0, 0);\r\n  let c1 = 0,\r\n    c2 = -h;\r\n  ctx.lineTo(\r\n    c1 + Math.cos(-Math.PI - angle) * r,\r\n    c2 + Math.sin(-Math.PI - angle) * r\r\n  );\r\n  ctx.closePath();\r\n\r\n  ctx.moveTo(rs, c2);\r\n  ctx.arc(c1, c2, rs, 0, Math.PI * 2, ccw);\r\n  ctx.closePath();\r\n\r\n  ctx.fill()\r\n  ctx.stroke();\r\n\r\n  ctx.restore();\r\n}\r\n\r\nimport range from './components/Range.vue';\r\n\r\nexport default {\r\n  components: {range},\r\n  data() {\r\n    return {\r\n      canvas: undefined,\r\n      context: undefined,\r\n      radius: 50,\r\n      innerRadius: 0.3,\r\n      perimeter: 2,\r\n      p: {x: 200, y: 200},\r\n    };\r\n  },\r\n  computed: {\r\n    // innerRadius: {\r\n    //   get() {\r\n    //     console.log('get', this._innerRadius);\r\n    //     return this._innerRadius\r\n    //   },\r\n    //   set(newValue) {\r\n    //     if (newValue + 4 >= this.radius) {\r\n    //       this._innerRadius = this.radius - 4;\r\n    //     } else {\r\n    //       this._innerRadius = newValue;\r\n    //     }\r\n    //     console.log(newValue, this._innerRadius);\r\n    //   }\r\n    // }\r\n  },\r\n  mounted() {\r\n    this.createCanvas();\r\n    this.drawPin();\r\n  },\r\n  methods: {\r\n    createCanvas() {\r\n      this.canvas = document.getElementById('canvas');\r\n      this.context = this.canvas.getContext('2d');\r\n    },\r\n    drawPin() {\r\n      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);\r\n      let p = this.p;\r\n      let r = this.radius;\r\n      let options = {\r\n        ri: this.innerRadius,\r\n        h: this.perimeter,\r\n      };\r\n      console.log(p, r, options)\r\n      pin(this.context, this.p, this.radius, options);\r\n    }\r\n  },\r\n  watch: {\r\n    radius(newVal, oldVal) {this.drawPin()},\r\n    innerRadius(newVal, oldVal) {this.drawPin()},\r\n    perimeter(newVal, oldVal) {this.drawPin()},\r\n  }\r\n}\r\n</script>\r\n<style scoped>\r\n.main {\r\n  margin: 0 auto;\r\n}\r\nlabel {\r\n  display: inline-block;\r\n}\r\ncanvas {\r\n  border: 1px dotted black;\r\n}\r\n</style>"]}, media: undefined });
+      inject("data-v-f7450aa8_0", { source: "\n.main[data-v-f7450aa8] {\n  margin: 0 auto;\n}\nlabel[data-v-f7450aa8] {\n  display: inline-block;\n}\ncanvas[data-v-f7450aa8] {\n  border: 1px dotted black;\n}\n.anaglyph[data-v-f7450aa8] {\n  padding: 0;\n  position: relative;\n  font-family: 'Orbitron', sans-serif;\n  font-size: 100px;\n  letter-spacing: -3px;\n  color: rgba(0, 254, 254, 1);\n}\n.anaglyph[data-v-f7450aa8]::after {\n  content: \"Marker pin\";\n  position: absolute;\n  left: 9px;\n  top: -1px;\n  color: rgba(254, 0, 2, 1);\n  /* mix-blend-mode: multiply; */\n  mix-blend-mode: screen;\n}\nheader[data-v-f7450aa8] {\n  position: absolute;\n  top: 20px;\n  left: 30px;\n  width: 100%;\n}\n.main[data-v-f7450aa8] {\n  width: 100%;\n  position: absolute;\n  top: 250px;\n  text-align: center;\n}\n.controls[data-v-f7450aa8] {\n  padding-top: 50px;\n  background-color: white;\n}\n", map: {"version":3,"sources":["C:\\code\\MarkerPin\\src\\App.vue"],"names":[],"mappings":";AAyIA;EACA,cAAA;AACA;AACA;EACA,qBAAA;AACA;AACA;EACA,wBAAA;AACA;AACA;EACA,UAAA;EACA,kBAAA;EACA,mCAAA;EACA,gBAAA;EACA,oBAAA;EACA,2BAAA;AACA;AACA;EACA,qBAAA;EACA,kBAAA;EACA,SAAA;EACA,SAAA;EACA,yBAAA;EACA,8BAAA;EACA,sBAAA;AACA;AACA;EACA,kBAAA;EACA,SAAA;EACA,UAAA;EACA,WAAA;AACA;AACA;EACA,WAAA;EACA,kBAAA;EACA,UAAA;EACA,kBAAA;AACA;AACA;EACA,iBAAA;EACA,uBAAA;AACA","file":"App.vue","sourcesContent":["<template>\r\n  <div class=\"main\">\r\n    <header>\r\n      <img style=\"position: relative;\"\r\n        src=\"https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA02744-1024x768.jpg\">\r\n      <!-- <p>https://www.jpl.nasa.gov/spaceimages/details.php?id=PIA02744</p> -->\r\n      <div style=\"position: absolute; top: 20px; left: 30px; width: 100%;\">\r\n        <h1 class=\"anaglyph\">Marker pin</h1>\r\n      </div>\r\n    </header>\r\n\r\n    <div class=\"main flex two\">\r\n      <div class=\"controls\">\r\n        <range v-model=\"radius\" :min=\"4\" :max=\"50\" :step=\"1\">Radius</range>\r\n        <range v-model=\"options.h\" :min=\"0.0\" :max=\"4\" :step=\"0.1\">height</range>\r\n        <range v-model=\"options.ri\" :min=\"0.0\" :max=\"1\" :step=\"0.01\">Inner radius</range>\r\n        <range v-model=\"options.weight\" :min=\"0.0\" :max=\"20\" :step=\"0.1\">Line weight</range>\r\n        <range v-model=\"options.fillOpacity\" :min=\"0.0\" :max=\"1\" :step=\"0.05\">Fill opacity</range>\r\n        <!-- <range v-model=\"fill\" :min=\"0.0\" :max=\"3\" :step=\"0.1\">height</range> -->\r\n        <!-- <range v-model=\"stroke\" :min=\"0.0\" :max=\"3\" :step=\"0.1\">height</range> -->\r\n      </div>\r\n      <div>\r\n        <canvas id=\"canvas\" width=\"400\" height=\"400\"></canvas>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</template>\r\n<script>\r\nconst pin = function(ctx, p, r, options = {}) {\r\n  let h = options.h * r || 2.0 * r;\r\n  let ccw = true;\r\n  let angle = Math.asin(r / h);\r\n  let angle2 = 0.5 * Math.PI - angle;\r\n  let rs = options.ri * r || 0.4 * r;\r\n\r\n  let fillOpacity = options.fillOpacity !== undefined ? options.fillOpacity : '0.8';\r\n\r\n  ctx.save();\r\n\r\n  ctx.translate(0.5, 0.5);\r\n\r\n\r\n\r\n  ctx.fillStyle = options.fill || `rgba(75,185,155,${fillOpacity})`;\r\n  ctx.strokeStyle = options.stroke || \"black\";\r\n\r\n  ctx.lineWidth = options.weight;\r\n\r\n  ctx.translate(p.x, p.y);\r\n  ctx.moveTo(0, -h);\r\n  ctx.beginPath();\r\n  ctx.arc(0, -h, r, -Math.PI - angle, angle);\r\n  ctx.lineTo(0, 0);\r\n  let c1 = 0,\r\n    c2 = -h;\r\n  ctx.lineTo(\r\n    c1 + Math.cos(-Math.PI - angle) * r,\r\n    c2 + Math.sin(-Math.PI - angle) * r\r\n  );\r\n  ctx.closePath();\r\n\r\n  ctx.moveTo(rs, c2);\r\n  ctx.arc(c1, c2, rs, 0, Math.PI * 2, ccw);\r\n  ctx.closePath();\r\n\r\n  ctx.fill()\r\n  ctx.stroke();\r\n\r\n  ctx.restore();\r\n}\r\n\r\nimport range from './components/Range.vue';\r\n\r\nexport default {\r\n  components: {\r\n    range,\r\n  },\r\n  data() {\r\n    return {\r\n      canvas: undefined,\r\n      context: undefined,\r\n      radius: 50,\r\n      options: {\r\n        h: 2, // height factor of radius\r\n        ri: 0.3, // inner radius factor of radius\r\n        weight: 2,\r\n        fill: undefined,\r\n        stroke: undefined,\r\n      },\r\n      p: {x: 200, y: 200},\r\n    };\r\n  },\r\n  computed: {\r\n    // innerRadius: {\r\n    //   get() {\r\n    //     console.log('get', this._innerRadius);\r\n    //     return this._innerRadius\r\n    //   },\r\n    //   set(newValue) {\r\n    //     if (newValue + 4 >= this.radius) {\r\n    //       this._innerRadius = this.radius - 4;\r\n    //     } else {\r\n    //       this._innerRadius = newValue;\r\n    //     }\r\n    //     console.log(newValue, this._innerRadius);\r\n    //   }\r\n    // }\r\n  },\r\n  mounted() {\r\n    this.createCanvas();\r\n    this.drawPin();\r\n  },\r\n  methods: {\r\n    createCanvas() {\r\n      this.canvas = document.getElementById('canvas');\r\n      this.context = this.canvas.getContext('2d');\r\n    },\r\n    drawPin() {\r\n      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);\r\n      let p = this.p;\r\n      let r = this.radius;\r\n      pin(this.context, this.p, this.radius, this.options);\r\n    }\r\n  },\r\n  watch: {\r\n    radius(newVal, oldVal) {this.drawPin()},\r\n    height(newVal, oldVal) {this.drawPin()},\r\n    options: {\r\n      handler(newVal, oldVal) {\r\n        this.drawPin()\r\n      },\r\n      deep: true,\r\n    }\r\n  }\r\n}\r\n</script>\r\n<style scoped>\r\n  .main {\r\n    margin: 0 auto;\r\n  }\r\n  label {\r\n    display: inline-block;\r\n  }\r\n  canvas {\r\n    border: 1px dotted black;\r\n  }\r\n  .anaglyph {\r\n    padding: 0;\r\n    position: relative;\r\n    font-family: 'Orbitron', sans-serif;\r\n    font-size: 100px;\r\n    letter-spacing: -3px;\r\n    color: rgba(0, 254, 254, 1);\r\n  }\r\n  .anaglyph::after {\r\n    content: \"Marker pin\";\r\n    position: absolute;\r\n    left: 9px;\r\n    top: -1px;\r\n    color: rgba(254, 0, 2, 1);\r\n    /* mix-blend-mode: multiply; */\r\n    mix-blend-mode: screen;\r\n  }\r\n  header {\r\n    position: absolute;\r\n    top: 20px;\r\n    left: 30px;\r\n    width: 100%;\r\n  }\r\n  .main {\r\n    width: 100%;\r\n    position: absolute;\r\n    top: 250px;\r\n    text-align: center;\r\n  }\r\n  .controls {\r\n    padding-top: 50px;\r\n    background-color: white;\r\n  }\r\n</style>"]}, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$1 = "data-v-775d2ca2";
+    const __vue_scope_id__$1 = "data-v-f7450aa8";
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
